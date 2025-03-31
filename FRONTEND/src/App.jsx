@@ -13,9 +13,9 @@ import Footer from "./layout/Footer";
 
 function Layout() {
   return (
-    <div>
+    <div className = 'flex flex-col h-screen justify-between'>
       <Navbar></Navbar>
-      <main>
+      <main className = 'mb-auto w-10/12 max-w-4xl mx-auto'>
         <Outlet></Outlet>
       </main>
       <Footer></Footer>
@@ -39,3 +39,7 @@ function App() {
 }
 
 export default App
+
+// npm install react-icons => 리액트 아이콘 설치
+// https://react-icons.github.io/react-icons/
+// 여기서 원하는거 찾아서 바로 쓸수 있게 해줌 !
