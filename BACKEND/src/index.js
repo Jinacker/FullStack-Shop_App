@@ -7,6 +7,10 @@ const path = require('path');
 
 const cors = require('cors')
 const app = express();
+const mongoose = require('mongoose')
+
+const dotenv = require('dotenv') // 환경변수 사용
+dotenv.config(); // 연결
 
 const port = 4001;
 
@@ -20,8 +24,15 @@ app.use(cors());
 
 //express.json => JSON 쓸수있게됨. 파싱 가능
 app.use(express.json());
-
-
+ 
+// 몽고DB 연결 => npm install mongoose => 몽고디비 코넥트 url + 패스워드 기입
+mongoose.connect(process.env.MONGO_URI) // github에 이 코넥트 url 올라가면 안되니까 env.에 환경변수로 만들어서 넣기. => env.는 깃이그노어됨.
+.then(()=>{
+    console.log('연결완료');
+}) 
+.catch(err=>{
+    console.error(err);
+})
 ///////////////////
 
 
@@ -35,8 +46,6 @@ app.post('/',(req,res)=> {
     console.log(req.body);
     res.json(req.body);
 })
-
-
 
 
 // 서버 실행
