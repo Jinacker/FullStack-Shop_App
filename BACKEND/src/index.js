@@ -33,12 +33,15 @@ mongoose.connect(process.env.MONGO_URI) // github에 이 코넥트 url 올라가
 .catch(err=>{
     console.error(err);
 })
+
+
+
 ///////////////////
 
 
 // HTTP GET 메서드
 app.get('/',(req,res) =>{
-    res.send('안녕하세요');
+    throw new Error('it is an error'); // 이렇게 에러 내면 => 서버가 다운되어버림 => 에러처리기 필요.
 })
 
 // HTTP POST 메서드
@@ -46,6 +49,17 @@ app.post('/',(req,res)=> {
     console.log(req.body);
     res.json(req.body);
 })
+
+/////////////////////
+
+// 에러 처리기 => 에러 받아서 처리 => 이제 서버 다운(크래쉬) 안됨 !
+// 실행 메서드 아래에 위치해야함.
+app.use((error,req,res,next)=>{
+    res.status(err.status || 500); // 이렇게 에러 상태코드랑
+    res.send(error.message || "서버에 에러가 났습니다"); // 에러 메세지 출력. || 없는거는 여기로 가서 실행됨.
+})
+
+// 근데 비동기 에러처리는 못함!! => 비동기 에러처리는 next()로 감싸줘서 처리해야 에러 처리기한테 들어감.
 
 
 // 서버 실행
