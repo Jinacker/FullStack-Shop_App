@@ -3,12 +3,17 @@
 
 const express = require('express');
 
+const path = require('path');
+
 const app = express();
 const port = 4001;
 
 app.get('/',(req,res) =>{
     res.send('안녕하세요');
 })
+
+// 미들웨어 사용
+app.use(express.static(path.join(__dirname,'../uploads'))); // 이러면 이제 uploads 폴더에 있는 파일들을 클라이언트에게 전달 가능.
 
 app.listen(port, () => {console.log(`${port}번에서 실행 되었습니다.`)}); // 서버 실행할때 node index.js 치기.
 
