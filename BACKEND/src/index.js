@@ -14,4 +14,5 @@ app.listen(port, () => {console.log(`${port}번에서 실행 되었습니다.`)}
 
 // nodemon index.js 얘 쓰면 자동 재시작. => 서버 다시 켜짐.
 
-
+// 필수 패키지 이것저것... 
+// npm install bcryptjs cors dotenv jsonwebtoken mongoose
