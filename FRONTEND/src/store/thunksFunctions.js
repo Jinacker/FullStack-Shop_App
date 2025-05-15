@@ -12,9 +12,9 @@ export const registerUser = createAsyncThunk(
     "user/registerUser", 
     async (body, thunkAPI) => {
         try {
-            const response = await axiosInstance.post('users/register',body);
+            const response = await axiosInstance.post('users/register',body); // 백엔드 서버 => users/register로 요청 보냄
             return response.data;
-        } catch (error) {
+        } catch(error) {
             console.log(error);
             
             // 에러 메세지 못받는 오류 고치기 => 좀 더 안전한 

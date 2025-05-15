@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv') // 환경변수 사용
 dotenv.config(); // 연결
 
-const port = 4001;
+const port = 4000; // 프론트와 포트 불일치 수정
 
 //////////미들웨어 등록 app.use 사용
 
@@ -50,12 +50,15 @@ app.post('/',(req,res)=> {
     res.json(req.body);
 })
 
+/////// routes의 users랑 연결 => 회원가입/로그인/인증 관련 api들
+app.use('/users', require('./routes/users')); 
+
 /////////////////////
 
 // 에러 처리기 => 에러 받아서 처리 => 이제 서버 다운(크래쉬) 안됨 !
-// 실행 메서드 아래에 위치해야함.
+// 실행 메서드 아래에 위치해야함. // 이 쉑이 문제다. 이거 고쳐야함. => 고치기 완료 err => error 오타수정
 app.use((error,req,res,next)=>{
-    res.status(err.status || 500); // 이렇게 에러 상태코드랑
+    res.status(error.status || 500); // 이렇게 에러 상태코드랑
     res.send(error.message || "서버에 에러가 났습니다"); // 에러 메세지 출력. || 없는거는 여기로 가서 실행됨.
 })
 
