@@ -1,11 +1,24 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { useForm } from 'react-hook-form' // 리액트 훅 폼 => 로그인 유효성 검사를 쉽게 해줌.
+import { useDispatch } from 'react-redux'
+import { registerUser } from '../../store/thunksFunctions'
 
 const RegisterPage = () => {
 const {register, handleSubmit, formState: {errors}, reset } = useForm({mode: 'onChange' }) // 이벤트 핸들러 생성
 
+// 회원가입 제출구현
+
+const dispatch = useDispatch(); // 디스패치 함수 만듬
+
 const onSubmit = ({email,password,name}) => { // onSubmit => 회원가입 버튼 눌리면 => 해당 값들 리셋
+  const body = {
+    email,
+    password,
+    name,
+    image: 'http://via.placeholder.com/600x400?text=no+user+image'
+  }
+  dispatch(registerUser(body));
   reset();
 }
 
