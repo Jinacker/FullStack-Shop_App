@@ -11,9 +11,22 @@ import RegisterPage from "./pages/RegisterPage";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 
+// 리액트 toast 설치 ! => npm install react-toastify 
+// => 위에 머 실행 완료! 이런창 띄워주는 용도임.
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css' // 이렇게 css도 import 해줘야함.
+
 function Layout() {
   return (
     <div className = 'flex flex-col h-screen justify-between'>
+
+      <ToastContainer
+      position='bottom-right'
+      theme = 'light'
+      pauseOnHover
+      autoClose={1500}
+      ></ToastContainer>
+      
       <Navbar></Navbar>
       <main className = 'mb-auto w-10/12 max-w-4xl mx-auto'>
         <Outlet></Outlet>

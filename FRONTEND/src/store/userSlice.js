@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {createSlice } from "@reduxjs/toolkit";
 import { registerUser } from "./thunksFunctions";
+import { toast } from "react-toastify";
 
 // 리덕스 만드는곳
 const initialState = {
@@ -27,10 +28,13 @@ const userSlice = createSlice({
         }) 
         .addCase(registerUser.fulfilled, (state) => {
         state.isLoading = false; 
+        toast.info('회원가입을 성공했습니다.'); // 성공 !
         })
         .addCase(registerUser.rejected, (state, action)=> {
-            state.isLoading = false;
-            state.error = action.payload;
+        state.isLoading = false;
+        state.error = action.payload;
+        console.log(action.payload)
+        toast.error(action.payload) // 실패... => 에러 출력
         })
 // extraReducers: (builder) => { // 이렇게 registerUser redux에 등록해줘야함.
 // registerUser 비동기 액션의 상태 변화에 따라 Redux 상태를 업데이트함.

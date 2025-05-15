@@ -12,14 +12,17 @@ export const registerUser = createAsyncThunk(
     "user/registerUser", 
     async (body, thunkAPI) => {
         try {
-            const response = await axiosInstance.post(
-                    'users/register',
-                    body
-            )
+            const response = await axiosInstance.post('users/register',body);
             return response.data;
         } catch (error) {
             console.log(error);
-            return thunkAPI.rejectWithValue(error.response.data || error.message);
+            
+            // 에러 메세지 못받는 오류 고치기 => 좀 더 안전한 
+  const message =
+    error?.response?.data?.message || // API 에러 메시지
+    error?.message ||                 // Axios 에러 메시지 (ex. "Network Error")
+    '알 수 없는 에러';
+  return thunkAPI.rejectWithValue(message);
         }
     }
 )
