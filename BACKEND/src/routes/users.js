@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); // 몽고DB 릴레이션 만든거 가져옴
+const jwt = require('jsonwebtoken')
 
 
 // 회원가입 요청 받는 api 
@@ -21,5 +22,41 @@ router.post('/register', async (req,res)=> { // 이렇게 async 비동기 해줘
   });
 }
 });
+
+
+
+// login 해서 JWT 기반으로 엑세스 토큰 건내주는 API
+router.post('/login', async (req, res, next) => {
+    // req.body   password , email
+    try {
+
+        // 존재하는 유저인지 체크
+        const user = await User.findOne({ email: req.body.email }); // 유저 이름이 존재하는지 검색
+
+        if (!user) { // 없는 유저일시
+            return res.status(400).send("Auth failed, email not found");
+        }
+
+        // 비밀번로가 올바른 것인지 체크
+        const isMatch = await user.comparePassword(req.body.password);
+        if (!isMatch) {
+            return res.status(400).send('Wrong password');
+        }
+
+        const payload = {
+            userId: user._id.toHexString(), // 페이로드 => 즉 정보는 유저 아이디만 전달.
+            // toHexString => 몽고DB에서는 id가 object 아이디로 되어있어서 이렇게 변경해줘야함.
+        }
+
+        // token을 생성
+        const accessToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }) // 엑세스 토큰 유효기간도 정해주기.
+
+        return res.json({ user, accessToken })
+
+    } catch (error) {
+        next(error)
+    }
+})
+
 
 module.exports = router

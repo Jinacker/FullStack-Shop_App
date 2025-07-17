@@ -45,6 +45,15 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-const User = mongoose.model("User",userSchema); // 스키마를 모델로 생성
+
+// 비밀번호 맞는지 체크하는 로직
+userSchema.methods.comparePassword = async function (plainPassword) {
+    let user = this;
+    const match = await bcrypt.compare(plainPassword, user.password); // 이렇게 입력된 plainPW를 bcrypt로 다시 해쉬해서 DB에 저장된 해쉬한 PW랑 비교
+    return match; // 이걸로 compare해서 맞는지 확인 => 맞으면 match 리턴
+}
+
+const User = mongoose.model("User", userSchema); // 모델 만드는건 항상 마지막에 하기.
+
 
 module.exports = User; // 모델을 모듈로 만듬 => 다른곳에서도 쓸수있다.
