@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {createSlice } from "@reduxjs/toolkit";
 import { registerUser,loginUser } from "./thunksFunctions";
 import { toast } from "react-toastify";
