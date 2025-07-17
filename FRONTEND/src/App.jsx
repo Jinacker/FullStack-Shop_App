@@ -1,5 +1,8 @@
 
-import { Outlet, Route, Routes } from 'react-router-dom'
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { authUser } from './store/thunksFunctions'
+import { useEffect } from 'react'
 import './App.css'
 
 // Pages import
@@ -37,6 +40,17 @@ function Layout() {
 } 
 
 function App() {
+
+  const dispatch = useDispatch();
+  const isAuth = useSelector(state => state.user?.isAuth);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(authUser());
+    }
+  }, [isAuth, pathname, dispatch])
+
 
   return ( // tailwind css를 써보자 ~ ! 이렇게 css 없이 바로바로 넣어서 만들수있다!
     <Routes>

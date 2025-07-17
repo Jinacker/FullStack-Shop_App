@@ -1,5 +1,5 @@
 import {createSlice } from "@reduxjs/toolkit";
-import { registerUser,loginUser } from "./thunksFunctions";
+import { registerUser,loginUser,authUser } from "./thunksFunctions";
 import { toast } from "react-toastify";
 
 // 리덕스 만드는곳
@@ -60,6 +60,25 @@ const userSlice = createSlice({
             state.error = action.payload;
             toast.error(action.payload);
         })
+
+/////// 인증인가 상태처리
+        .addCase(authUser.pending, (state) => { // 인증 요청중
+            state.isLoading = true;
+        })
+        .addCase(authUser.fulfilled, (state, action) => { // 인증인가 성공
+            state.isLoading = false;
+            state.userData = action.payload; 
+            state.isAuth = true;
+        })
+        .addCase(authUser.rejected, (state, action) => { // 인증인가 실패시
+            state.isLoading = false;
+            state.error = action.payload;
+            state.userData = initialState.userData;
+            state.isAuth = false;
+            localStorage.removeItem('accessToken');
+        })
+
+
     }
 })
 

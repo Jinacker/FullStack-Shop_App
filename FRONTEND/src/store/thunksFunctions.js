@@ -51,3 +51,20 @@ export const loginUser = createAsyncThunk(
         }
     }
 )
+
+// 유저 로그인 인증용 Auth
+export const authUser = createAsyncThunk(
+    "user/authUser",
+    async (_, thunkAPI) => { // thunkAPI는 항상 두번째라 앞에 _ 해서 냄둠 ~
+        try {
+            const response = await axiosInstance.get(
+                `/users/auth`
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return thunkAPI.rejectWithValue(error.response.data || error.message);
+        }
+    }
+)

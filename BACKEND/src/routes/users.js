@@ -4,7 +4,21 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); // 몽고DB 릴레이션 만든거 가져옴
 const jwt = require('jsonwebtoken')
+const auth = require('../middleware/auth')
 
+// 인증 받는 api
+router.get('/auth', auth, async (req, res, next) => {
+
+    return res.json({ // middleware 에서 가져온 req.user 프로퍼티 안에서 정보 꺼내옴.
+        id: req.user._id,
+        email: req.user.email,
+        name: req.user.name,
+        role: req.user.role,
+        image: req.user.image,
+        cart: req.user.cart,
+        history: req.user.history
+    })
+})
 
 // 회원가입 요청 받는 api 
 router.post('/register', async (req,res)=> { // 이렇게 async 비동기 해줘야함.

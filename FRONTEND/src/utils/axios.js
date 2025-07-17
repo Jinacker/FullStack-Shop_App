@@ -9,4 +9,12 @@ const axiosInstance = axios.create({
     '' : 'http://localhost:4000' // 아직 배포를 안해서 앞에껀 비워둠. 추후 채우면 됨.
 })
 
+// 엑세스 토큰 헤더 설정 
+axiosInstance.interceptors.request.use(function (config) {
+    config.headers.Authorization = 'Bearer ' + localStorage.getItem('accessToken');
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+})
+
 export default axiosInstance;
