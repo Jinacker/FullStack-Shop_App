@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import {createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "./thunksFunctions";
+import { registerUser,loginUser } from "./thunksFunctions";
 import { toast } from "react-toastify";
 
 // 리덕스 만드는곳
@@ -44,6 +44,23 @@ const userSlice = createSlice({
 // fulfilled → isLoading = false (요청 성공)
 // rejected → isLoading = false, error = 에러내용 (요청 실패)
 // 회원가입 API 요청의 진행 상태(로딩, 성공, 실패)를 Redux로 관리하려는 목적.
+
+
+////// 로그인 상태처리
+        .addCase(loginUser.pending, (state) => {
+                state.isLoading = true;
+        })
+        .addCase(loginUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.userData = action.payload;
+            state.isAuth = true;
+            localStorage.setItem('accessToken', action.payload.accessToken); // 이것도 토큰 넘겨줌 ~~~
+        })
+        .addCase(loginUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+            toast.error(action.payload);
+        })
     }
 })
 

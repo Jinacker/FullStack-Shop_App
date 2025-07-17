@@ -30,3 +30,24 @@ export const registerUser = createAsyncThunk(
 //"Redux 상태"란 쉽게 말해서, 
 // 앱 전체에서 공유하는 중앙 저장소(Central Store)에 저장된 데이터를 뜻해. 
 // 컴포넌트들이 각각 따로 state를 관리하면 복잡해지니까, Redux에서는 모든 상태를 하나의 큰 트리 구조로 관리해.
+
+
+////////////////////////
+
+// 유저 로그인용
+export const loginUser = createAsyncThunk(
+    "user/loginUser",
+    async (body, thunkAPI) => {
+        try {
+            const response = await axiosInstance.post(
+                `/users/login`,
+                body
+            )
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return thunkAPI.rejectWithValue(error.response.data || error.message);
+        }
+    }
+)
